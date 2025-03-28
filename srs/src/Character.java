@@ -1,8 +1,10 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Character {
     protected int level;
     protected int HP;
+    protected int AC;
     protected int strength;
     protected int dexterity;
     protected int constitution;
@@ -12,35 +14,61 @@ public class Character {
     protected String name;
     protected ArrayList<String> feats = new ArrayList<String>();
 
-    public Character(int level, int HP, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma, String name, ArrayList feats) {
+    public Character(int level, String name) {
         this.level = level;
-        this.HP = HP;
-        this.strength = strength;
-        this.dexterity = dexterity;
-        this.constitution = constitution;
-        this.intelligence = intelligence;
-        this.wisdom = wisdom;
-        this.charisma = charisma;
         this.name = name;
-        this.feats = feats;
+        dice();
+        calcHP();
+        calcAC();
+    }
+
+    public Character() {
+        strength = 10;
+        dexterity = 10;
+        constitution = 10;
+        intelligence = 10;
+        wisdom = 10;
+        charisma = 10;
+
+
+    }
+
+    public void dice() {
+        Random rand = new Random();
+        strength = rand.nextInt(3, 18);
+        dexterity = rand.nextInt(3, 18);
+        constitution = rand.nextInt(3, 18);
+        intelligence = rand.nextInt(3, 18);
+        wisdom = rand.nextInt(3, 18);
+        charisma = rand.nextInt(3, 18);
 
     }
 
     public void calcHP() {
-        HP = HP + (level-1) * (6 + constitution);
+        if (level == 1) {
+            HP = 10 + constitution;
+        }
+        else {
+            HP = HP + (level-1) * (6 + constitution);
+        }
     }
 
-    public void calcAC(int AC) {
+    public void calcAC() {
         AC = 10 + dexterity;
     }
 
-    public void levelUp(int level, int AC) {
+    public void levelUp() {
         level = level+1;
         calcHP();
-        calcAC(AC);
+        calcAC();
     }
 
     public void addFeat(ArrayList feats, String feat) {
         feats.add(feat);
     }
+
+    public void ToString() {
+        System.out.println("Character Name: " + name + " Level: " + level + " Class: " + "placeholder \n" + " HP: " + HP + " | STR: " + strength + "\n DEX: " + dexterity + " | CON: " + constitution + "\n INT: " + intelligence + " | WIS: " + wisdom + " | CHA: " + charisma + "\n Feats: " + feats);
+    }
+
 }
